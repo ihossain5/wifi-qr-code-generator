@@ -1,0 +1,23 @@
+.navbar,
+#generator .page-header,
+#about,
+#history,
+#form,
+#github,
+#contact,
+#export,
+#print,
+
+.footer {
+    display: none !important;
+}
+
+#showssid,
+#showkey {
+    display: block;
+    word-wrap: break-word;
+    font-family: Consolas, Menlo, "DejaVu Sans Mono", monospace;
+}
+.main-card{
+   box-shadow: none !important;
+}

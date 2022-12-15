@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="pure JS WiFi QR Code Generator">
+    <meta name="author" content="Evgeni Golov">
+    <meta name="flattr:id" content="menw3k">
+    <title>WiFi QR Code Generator</title>
+    <link rel="stylesheet" type="text/css" media="all" href="style.css">
+    <link rel="stylesheet" type="text/css" media="print" href="print.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+
+<body class="flex bg-local">
+    <div class="mx-auto max-w-6xl py-20 px-12 lg:px-24 mb-24 main-card">
+        <div class="main-title">
+            <p>QR Code <br> Generator</p>
+        </div>
+        <form id="form">
+            <div class="px-8 pt-6 pb-8 mb-4 flex flex-col ">
+                <div class="-mx-3 md:flex mb-6">
+                    <div class="md:w-full px-3">
+                        <label class="uppercase tracking-wide text-white text-xs font-bold mb-2" for="application-link">
+                            Name*
+                        </label>
+                        <input id="ssid"
+                            class="w-full bg-gray-200 text-black border border-gray-200 rounded py-3 px-4 mb-3"
+                            id="application-link" type="text" placeholder="name..." required>
+                    </div>
+                </div>
+                <div class="-mx-3 md:flex mb-6">
+                    <div class="md:w-full px-3">
+                        <label class="uppercase tracking-wide text-white text-xs font-bold mb-2" for="application-link">
+                            Password*
+                        </label>
+                        <input id="key"
+                            class="w-full bg-gray-200 text-black border border-gray-200 rounded py-3 px-4 mb-3"
+                            id="application-link" type="password" placeholder="password...." required>
+                    </div>
+                </div>
+
+                <div class="-mx-3 md:flex mt-2">
+                    <div class="md:w-full px-3">
+                        <button id="generate" type="submit"
+                            class="md:w-full bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl text-white font-bold py-2 px-4  border-gray-500 hover:border-gray-100 rounded-full">
+                            Generate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a id="export"
+                class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-5">
+                Export
+            </a>
+            <a href="javascript:window.print()" id="print"
+                class="hidden focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 mt-5">
+                Print
+            </a>
+            <div id="qrcode" class="flex items-center justify-center pt-10"></div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.slim.min.js"
+        integrity="sha512-yBpuflZmP5lwMzZ03hiCLzA94N0K2vgBtJgqQ2E1meJzmIBfjbb7k4Y23k2i2c/rIeSUGc7jojyIY5waK3ZxCQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"
+        integrity="sha512-NFUcDlm4V+a2sjPX7gREIXgCSFja9cHtKPOL1zj6QhnE0vcY695MODehqkaGYTLyL2wxe/wtr4Z49SvqXq12UQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+        function escape_string(string) {
+            var to_escape = ['\\', ';', ',', ':', '"'];
+            var hex_only = /^[0-9a-f]+$/i;
+            var output = "";
+            for (var i = 0; i < string.length; i++) {
+                if ($.inArray(string[i], to_escape) != -1) {
+                    output += '\\' + string[i];
+                }
+                else {
+                    output += string[i];
+                }
+            }
+            return output;
+        };
+
+        function generate() {
+            var ssid = $('#ssid').val();
+            var enc = 'WPA';
+            if (enc != 'nopass') {
+                var key = $('#key').val();
+                $('#showkey').text(enc + ' Passphrase: ' + key);
+            } else {
+                var key = '';
+                $('#showkey').text('');
+            }
+            var qrstring = 'WIFI:S:' + escape_string(ssid) + ';T:' + enc + ';P:' + escape_string(key) + ';';
+
+            qrstring += ';';
+            $('#qrcode').empty();
+            $('#qrcode').qrcode(qrstring);
+            $('#showssid').text('SSID: ' + ssid);
+            $('#print').css('display', 'inline-block');
+
+            var canvas = $('#qrcode canvas');
+            canvas.addClass('canvas')
+
+            if (canvas.length == 1) {
+                var data = canvas[0].toDataURL('image/png');
+                var e = $('#export');
+                e.attr('href', data);
+                e.attr('download', ssid + '-qrcode.png');
+                // e.show() sets display:inline, but we need inline-block
+                e.css('display', 'inline-block');
+            }
+        };
+
+
+        $(document).ready(function () {
+            $('#form').submit(function () {
+                generate();
+                return false;
+            });
+        });
+
+    </script>
+</body>
+
+</html>
