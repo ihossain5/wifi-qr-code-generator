@@ -42,8 +42,8 @@
                             <input id="key"
                                 class="w-full bg-gray-200 text-black border border-gray-200 rounded py-3 px-4 mb-3"
                                 id="application-link" type="password" placeholder="password...." required>
-                            <svg onclick="show()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" id="svg"
-                                class="bi bi-eye absolute top-6 right-3 -translate-y-1/2" viewBox="0 0 16 16">
+                            <svg onclick="show()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"
+                                id="svg" class="bi bi-eye absolute top-6 right-3 -translate-y-1/2" viewBox="0 0 16 16">
                                 <path
                                     d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                                 <path
@@ -56,7 +56,7 @@
                 <div class="-mx-3 md:flex mt-2">
                     <div class="md:w-full px-3">
                         <button id="generate" type="submit"
-                            class="md:w-full text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl font-bold py-2 px-4  border-gray-500 hover:border-gray-100 rounded-full">
+                            class="md:w-full text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
                             Generate
                         </button>
                     </div>
@@ -74,6 +74,17 @@
                 Print
             </a>
             <div id="qrcode" class="flex items-center justify-center pt-10"></div>
+        </div>
+
+        <div class="relative scan-div hidden p-4 w-full bg-white rounded-lg overflow-hidden hover:shadow flex flex-col justify-center items-center mt-2"
+            style="min-height: 160px">
+            <div class="w-16 h-16">
+                <img src="wifi-logo-svgrepo-com.svg" alt="">
+            </div>
+
+            <h2 class="mt-2 text-gray-800 text-sm font-semibold line-clamp-1">
+                Scan To Connect
+            </h2>
         </div>
     </div>
 
@@ -122,6 +133,7 @@
 
             var canvas = $('#qrcode canvas');
             canvas.addClass('canvas')
+            $('.scan-div').removeClass('hidden')
 
             if (canvas.length == 1) {
                 var data = canvas[0].toDataURL('image/png');
@@ -149,6 +161,7 @@
                 password.type = 'password'
             }
         }
+
     </script>
 </body>
 
